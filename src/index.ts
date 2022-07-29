@@ -1,5 +1,7 @@
 // create connection
 import { DataSource } from "typeorm";
+import { Post } from "./entities/Post";
+import { User } from "./entities/User";
 // Connection is now DataSource
 
 const AppDataSource = new DataSource({
@@ -9,11 +11,13 @@ const AppDataSource = new DataSource({
   username: "postgres",
   password: "",
   database: "terra_database",
+  entities: [User, Post],
+  synchronize: true,
 });
 
 AppDataSource.initialize()
   .then(() => {
-    console.log("Data Source has been initialized!");
+    console.log("Connected to Postgres");
   })
   .catch((err) => {
     console.error("Error during Data Source initialization", err);

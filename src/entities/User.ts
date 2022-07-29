@@ -1,12 +1,21 @@
-import { Entity, BaseEntity, Column, CreateDateColumn } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity("users")
-export class Users extends BaseEntity {
-  @Column({ unique: true })
-  userId: string;
+@Entity("user")
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
 
   @Column()
   first_name: string;
@@ -25,4 +34,7 @@ export class Users extends BaseEntity {
 
   @CreateDateColumn()
   date_joined: Date;
+
+  @Column({ default: true })
+  is_active: boolean;
 }
