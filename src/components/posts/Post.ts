@@ -9,8 +9,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Tag } from "./Tag";
-import { User } from "./User";
+import { Tag } from "../tags/Tag";
+import { User } from "../users/User";
 
 @Entity("post")
 export class Post extends BaseEntity {

@@ -7,7 +7,7 @@ import {
   OneToMany,
   JoinColumn,
 } from "typeorm";
-import { Post } from "./Post";
+import { Post } from "../posts/Post";
 
 @Entity("user")
 export class User extends BaseEntity {

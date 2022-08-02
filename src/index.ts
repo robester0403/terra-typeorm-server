@@ -1,11 +1,10 @@
 // create connection
 import { DataSource } from "typeorm";
-import { Post } from "./entities/Post";
-import { Tag } from "./entities/Tag";
-import { User } from "./entities/User";
+import { Post } from "./components/posts/Post";
+import { Tag } from "./components/tags/Tag";
+import { User } from "./components/users/User";
 import express from "express";
 import cors from "cors";
-import usersRoutes from "./routes/users-routes";
 
 require("dotenv").config();
 // Connection is now DataSource
@@ -34,7 +33,7 @@ const main = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     // use routes here
-    app.use("/api/users, usersRoutes");
+    // app.use("/api/users, usersRoutes");
 
     app.listen(PORT, () => {
       console.log(`Connected to Port ${PORT}...`);
