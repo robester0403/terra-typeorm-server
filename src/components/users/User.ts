@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   JoinColumn,
+  Index,
 } from "typeorm";
 import { Post } from "../posts/Post";
 
@@ -14,28 +15,29 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Index({ unique: true })
+  @Column("varchar", { length: 100 })
   email: string;
 
-  @Column()
+  @Column("varchar", { length: 100 })
   password: string;
 
-  @Column()
+  @Column("varchar", { length: 100 })
   first_name: string;
 
-  @Column()
+  @Column("varchar", { length: 100 })
   last_name: string;
 
-  @Column({ nullable: true })
-  picture_url: string;
+  @Column("varchar", { length: 500, nullable: true })
+  profile_picture_url: string;
 
-  @Column({ nullable: true })
+  @Column("varchar", { length: 255, nullable: true })
   address: string;
 
-  @Column({ nullable: true })
+  @Column("varchar", { length: 25, nullable: true })
   zipcode: string;
 
-  @Column({ nullable: true })
+  @Column("varchar", { length: 25, nullable: true })
   telephone: string;
 
   @CreateDateColumn()

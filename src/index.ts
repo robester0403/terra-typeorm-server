@@ -28,11 +28,11 @@ const main = async () => {
     await AppDataSource.initialize();
     console.log("Data source initialized...");
 
-    //setup needed middleware
+    // midddleware here
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    // use routes here
+    // routes here
     app.use("/api/users", usersRoutes);
 
     app.listen(PORT, () => {
@@ -40,15 +40,8 @@ const main = async () => {
       console.log("Happy Hacking");
     });
   } catch (err) {
-    console.log(err); // res.status(xx)
+    console.error("Error while initializing server", err); // res.status(xx)
   }
-  // AppDataSource.initialize()
-  //   .then(() => {
-  //     console.log("Connected to Postgres");
-  //   })
-  //   .catch((err) => {
-  //     console.error("Error during Data Source initialization", err);
-  //   });
 };
 
 main();

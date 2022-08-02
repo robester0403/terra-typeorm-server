@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  Index,
   ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -12,8 +13,9 @@ export class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  tagName: string;
+  @Index({ unique: true })
+  @Column("varchar", { length: 100 })
+  tag_name: string;
 
   @ManyToMany(() => Post)
   posts: Post[];

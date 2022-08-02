@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -17,11 +18,15 @@ export class Post extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Index({ unique: true })
+  @Column("varchar", { length: 500, nullable: true })
   picture_url: string;
 
-  @Column()
+  @Column("text", { nullable: true })
   description: string;
+
+  @Column("varchar", { length: 50, nullable: true })
+  short_description: string;
 
   @CreateDateColumn()
   date_created: Date;
