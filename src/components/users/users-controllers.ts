@@ -1,7 +1,6 @@
 import { User } from "./User";
-
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
 const HttpError = require("../utils/http-error");
 
 const signup = async (req: any, res: any, next: (arg0: any) => any) => {
@@ -34,16 +33,25 @@ const signup = async (req: any, res: any, next: (arg0: any) => any) => {
     return next(error);
   }
 
-  const user = User.create({
+  const newUser = User.create({
     first_name: firstName,
     last_name: lastName,
     email,
-    password,
+    password: hashedPassword,
   });
 
-  await user.save();
+  try {
+    await newUser.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Signing up failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
 
-  return res.json(user);
+  return res.json(newUser);
+  // need to do JWT token after
 };
 
 exports.signup = signup;
