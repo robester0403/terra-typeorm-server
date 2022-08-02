@@ -2,6 +2,7 @@ import { User } from "./User";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 const HttpError = require("../utils/http-error");
+import jwt from "jsonwebtoken";
 
 const signup = async (req: any, res: any, next: (arg0: any) => any) => {
   const errors = validationResult(req);
@@ -50,8 +51,32 @@ const signup = async (req: any, res: any, next: (arg0: any) => any) => {
     return next(error);
   }
 
-  return res.json(newUser);
+  let token;
+  try {
+    token = jwt.sign(
+      {
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        email: newUser.email,
+      },
+      "supersecret_dont_share",
+      { expiresIn: "1h" }
+    );
+  } catch (err) {
+    const error = new HttpError(
+      "Logging in failed, please try again later.",
+      500
+    );
+  }
   // need to do JWT token after
+  res
+    .status(201)
+    .json({
+      firstName: newUser.first_name,
+      lastName: newUser.last_name,
+      email: newUser.email,
+      token: token,
+    });
 };
 
 exports.signup = signup;
