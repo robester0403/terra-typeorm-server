@@ -39,7 +39,7 @@ export class User extends BaseEntity {
   telephone: string;
 
   @CreateDateColumn()
-  date_joined: Date;
+  date_joined: Date; // note this auto sets Date no value needed
 
   @Column({ default: true })
   is_active: boolean;
