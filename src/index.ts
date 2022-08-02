@@ -1,6 +1,7 @@
 // create connection
 import { DataSource } from "typeorm";
 import { Post } from "./entities/Post";
+import { Tag } from "./entities/Tag";
 import { User } from "./entities/User";
 // Connection is now DataSource
 
@@ -9,9 +10,9 @@ const AppDataSource = new DataSource({
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "",
+  password: "Breanna0403",
   database: "terra_database",
-  entities: [User, Post],
+  entities: [User, Post, Tag],
   synchronize: true,
 });
 

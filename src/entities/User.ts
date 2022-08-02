@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
 } from "typeorm";
+import { Post } from "./Post";
 
 @Entity("user")
 export class User extends BaseEntity {
@@ -24,6 +27,9 @@ export class User extends BaseEntity {
   last_name: string;
 
   @Column({ nullable: true })
+  picture_url: string;
+
+  @Column({ nullable: true })
   address: string;
 
   @Column({ nullable: true })
@@ -37,4 +43,7 @@ export class User extends BaseEntity {
 
   @Column({ default: true })
   is_active: boolean;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 }
