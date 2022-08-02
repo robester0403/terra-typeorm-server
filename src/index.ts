@@ -5,9 +5,9 @@ import { Tag } from "./components/tags/Tag";
 import { User } from "./components/users/User";
 import express from "express";
 import cors from "cors";
+const usersRoutes = require("./components/users/users-routes");
 
 require("dotenv").config();
-// Connection is now DataSource
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -33,7 +33,7 @@ const main = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     // use routes here
-    // app.use("/api/users, usersRoutes");
+    app.use("/api/users", usersRoutes);
 
     app.listen(PORT, () => {
       console.log(`Connected to Port ${PORT}...`);

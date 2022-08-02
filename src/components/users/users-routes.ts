@@ -1,2 +1,10 @@
 import express from "express";
-const usersController = require("../controllers/users-controllers");
+// import usersController from "./users-controllers";
+
+const router = express.Router();
+
+router.get("/", () => {
+  console.log("hello world");
+});
+
+module.exports = router;
