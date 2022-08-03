@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 const HttpError = require("../utils/http-error");
 import jwt from "jsonwebtoken";
-import { DataSource } from "typeorm";
 
 const signup = async (req: any, res: any, next: (arg0: any) => any) => {
   const errors = validationResult(req);
@@ -53,30 +52,31 @@ const signup = async (req: any, res: any, next: (arg0: any) => any) => {
     return next(error);
   }
 
-  let token;
-  try {
-    token = jwt.sign(
-      {
-        firstName: newUser.first_name,
-        lastName: newUser.last_name,
-        email: newUser.email,
-      },
-      "supersecret_dont_share",
-      { expiresIn: "1h" }
-    );
-  } catch (err) {
-    const error = new HttpError(
-      "Logging in failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  // need to do JWT token after
+  // let token;
+  // try {
+  //   token = jwt.sign(
+  //     {
+  //       firstName: newUser.first_name,
+  //       lastName: newUser.last_name,
+  //       email: newUser.email,
+  //     },
+  //     "supersecret_dont_share",
+  //     { expiresIn: "1h" }
+  //   );
+  // } catch (err) {
+  //   const error = new HttpError(
+  //     "Logging in failed, please try again later.",
+  //     500
+  //   );
+  //   return next(error);
+  // }
+  // Might remove this section
   res.status(201).json({
+    // userId: newUser.id,
     firstName: newUser.first_name,
     lastName: newUser.last_name,
     email: newUser.email,
-    token: token,
+    // token: token,
   });
 };
 
@@ -129,6 +129,7 @@ const login = async (req: any, res: any, next: (arg0: any) => any) => {
   try {
     token = jwt.sign(
       {
+        userId: existingUser.id,
         firstName: existingUser.first_name,
         lastName: existingUser.last_name,
         email: existingUser.email,
@@ -145,6 +146,7 @@ const login = async (req: any, res: any, next: (arg0: any) => any) => {
   }
 
   res.status(200).json({
+    userId: existingUser.id,
     firstName: existingUser.first_name,
     lastName: existingUser.last_name,
     email: existingUser.email,
