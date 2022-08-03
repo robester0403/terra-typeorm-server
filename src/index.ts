@@ -7,11 +7,14 @@ import express from "express";
 import cors from "cors";
 const usersRoutes = require("./components/users/users-routes");
 
-require("dotenv").config();
-
+// Assign express to variable
 const app = express();
+
+// Config ports
+require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 
+// Data Source Config
 const AppDataSource = new DataSource({
   type: "postgres",
   host: "localhost",
@@ -44,4 +47,5 @@ const main = async () => {
   }
 };
 
+// run functions in order here
 main();
