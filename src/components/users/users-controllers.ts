@@ -1,8 +1,10 @@
+import {} from "typeorm";
 import { User } from "./User";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 const HttpError = require("../utils/http-error");
 import jwt from "jsonwebtoken";
+import { DataSource } from "typeorm";
 
 const signup = async (req: any, res: any, next: (arg0: any) => any) => {
   const errors = validationResult(req);
@@ -67,16 +69,35 @@ const signup = async (req: any, res: any, next: (arg0: any) => any) => {
       "Logging in failed, please try again later.",
       500
     );
+    return next(error);
   }
   // need to do JWT token after
-  res
-    .status(201)
-    .json({
-      firstName: newUser.first_name,
-      lastName: newUser.last_name,
-      email: newUser.email,
-      token: token,
-    });
+  res.status(201).json({
+    firstName: newUser.first_name,
+    lastName: newUser.last_name,
+    email: newUser.email,
+    token: token,
+  });
+};
+
+const login = async (req: any, res: any, next: (arg0: any) => any) => {
+  interface loginParams {
+    email: string;
+    password: string;
+  }
+  const { email, password }: loginParams = req.body;
+
+  const existingUser = await User.findOneBy({
+    email: email,
+  });
+
+  if (!existingUser) {
+    console.log("no match found");
+  }
+  if (existingUser) {
+    console.log("FOUND");
+  }
 };
 
 exports.signup = signup;
+exports.login = login;
