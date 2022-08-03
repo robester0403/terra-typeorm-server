@@ -87,16 +87,69 @@ const login = async (req: any, res: any, next: (arg0: any) => any) => {
   }
   const { email, password }: loginParams = req.body;
 
-  const existingUser = await User.findOneBy({
-    email: email,
-  });
+  let existingUser;
+  try {
+    existingUser = await User.findOneBy({
+      email: email,
+    });
+  } catch (err) {
+    const error = new HttpError(
+      "Logging in failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
 
   if (!existingUser) {
-    console.log("no match found");
+    console.log("not found");
+    const error = new HttpError(
+      "Invalid credentials, could not log you in.",
+      403
+    );
+    return next(error);
   }
-  if (existingUser) {
-    console.log("FOUND");
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    const error = new HttpError(
+      "Could not log you in, please check your credentials and try again.",
+      500
+    );
+    return next(error);
   }
+
+  if (!isValidPassword) {
+    const error = new HttpError("Invalid password, could not log in", 403);
+    return next(error);
+  }
+
+  let token;
+  try {
+    token = jwt.sign(
+      {
+        firstName: existingUser.first_name,
+        lastName: existingUser.last_name,
+        email: existingUser.email,
+      },
+      "supersecret_dont_share",
+      { expiresIn: "1h" }
+    );
+  } catch (err) {
+    const error = new HttpError(
+      "Logging in failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({
+    firstName: existingUser.first_name,
+    lastName: existingUser.last_name,
+    email: existingUser.email,
+    token: token,
+  });
 };
 
 exports.signup = signup;
