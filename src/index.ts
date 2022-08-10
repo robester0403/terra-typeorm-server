@@ -20,7 +20,7 @@ const AppDataSource = new DataSource({
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "Breanna0403",
+  password: "password",
   database: "terra_database",
   entities: [User, Post, Tag],
   synchronize: true,
